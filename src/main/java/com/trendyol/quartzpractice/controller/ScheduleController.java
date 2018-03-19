@@ -27,5 +27,23 @@ public class ScheduleController {
         return "ok";
     }
 
+    @RequestMapping(value = "/unschedule")
+    public String unschedule (@RequestParam(name="identifier", required = true) String identifier) throws SchedulerException {
+        schedulerService.unschedule(identifier);
+        return "ok";
+    }
+
+    @RequestMapping(value = "/pause")
+    public String pauseTrigger (@RequestParam(name="identifier", required = true) String identifier) throws SchedulerException {
+        schedulerService.pauseTrigger(identifier);
+        return "ok";
+    }
+
+    @RequestMapping(value = "/resume")
+    public String resumeTrigger (@RequestParam(name="identifier", required = true) String identifier) throws SchedulerException {
+        schedulerService.resumeTrigger(identifier);
+        return "ok";
+    }
+
 
 }
