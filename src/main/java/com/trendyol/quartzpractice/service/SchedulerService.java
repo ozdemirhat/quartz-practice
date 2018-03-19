@@ -38,7 +38,7 @@ public class SchedulerService {
 
         JobDetail jobDetail = JobBuilder.newJob( jobClass ).withIdentity( identifier ).build();
 
-        CronTrigger cronTrigger = TriggerBuilder.newTrigger().withIdentity( identifier ).withSchedule( cronScheduleBuilder ).build();
+        CronTrigger cronTrigger = TriggerBuilder.newTrigger().withIdentity( identifier ).withSchedule( cronScheduleBuilder.withMisfireHandlingInstructionIgnoreMisfires() ).build();
 
         scheduler.scheduleJob( jobDetail, cronTrigger );
     }
@@ -47,10 +47,32 @@ public class SchedulerService {
 
         CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule( cronExpression );
 
-        CronTrigger cronTrigger = TriggerBuilder.newTrigger().withIdentity( identifier ).withSchedule( cronScheduleBuilder ).build();
+        CronTrigger cronTrigger = TriggerBuilder.newTrigger().withIdentity( identifier ).withSchedule( cronScheduleBuilder.withMisfireHandlingInstructionIgnoreMisfires() ).build();
 
         scheduler.rescheduleJob( TriggerKey.triggerKey( identifier ), cronTrigger );
     }
+
+    public void unschedule (String identifier) throws SchedulerException {
+
+        Trigger trigger = TriggerBuilder.newTrigger().withIdentity(identifier).build();
+
+        scheduler.unscheduleJob(TriggerKey.triggerKey( identifier ));
+    }
+
+    public void pauseTrigger (String identifier) throws SchedulerException {
+
+        Trigger trigger = TriggerBuilder.newTrigger().withIdentity(identifier).build();
+
+        scheduler.pauseTrigger(TriggerKey.triggerKey( identifier ));
+    }
+
+    public void resumeTrigger (String identifier) throws SchedulerException {
+
+        Trigger trigger = TriggerBuilder.newTrigger().withIdentity(identifier).build();
+
+        scheduler.resumeTrigger(TriggerKey.triggerKey( identifier ));
+    }
+
 
 
 }
